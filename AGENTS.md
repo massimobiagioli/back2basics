@@ -3,6 +3,7 @@
 ## Project Reference
 
 - [Constitution](docs/CONSTITUTION.md) — Mission, core principles, and governance of the Back 2 Basics project.
+- [Principles](docs/PRINCIPLES.md) — Clean Code, Clean Architecture, dual-language playbooks, diagrams, and mobile-first design.
 - [Technology Stack](docs/STACK.md) — Runtime, framework, tooling, design system, and deployment choices.
 
 ## Rules
