@@ -42,7 +42,7 @@ If you notice something worth improving that falls outside scope, record it in t
 ```markdown
 # Review: <Feature Title>
 
-**Plan**: [docs/plans/<name>.md](../../docs/plans/<name>.md)
+**Plan**: [.project/<name>/plan.md](../../.project/<name>/plan.md)
 **Branch**: `feat/<feature-name>`
 **Date**: YYYY-MM-DD
 **Reviewer**: Back 2 Basics code-review agent
@@ -85,7 +85,7 @@ Every reviewed feature produces an Architecture Decision Record at `docs/adr/<YY
 
 **Date**: YYYY-MM-DD
 **Status**: accepted | proposed
-**Plan**: [docs/plans/<name>.md](../plans/<name>.md)
+**Plan**: [.project/<name>/plan.md](../project/<name>/plan.md)
 
 ## Context
 

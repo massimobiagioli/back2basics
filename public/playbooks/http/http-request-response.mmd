@@ -1,0 +1,5 @@
+sequenceDiagram
+    participant C as Client (Browser)
+    participant S as Server
+    C->>S: GET /index.html HTTP/1.1<br>Host: example.com
+    S->>C: HTTP/1.1 200 OK<br>Content-Type: text/html<br><br>html...

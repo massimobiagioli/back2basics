@@ -4,7 +4,7 @@
 
 | Layer       | Choice                        | Rationale                                          |
 |-------------|-------------------------------|----------------------------------------------------|
-| **Runtime** | Node.js LTS (22.x)            | Long-term stability, Vercel first-class support    |
+| **Runtime** | Node.js LTS (24.x)            | Long-term stability, Vercel first-class support    |
 | **Package** | pnpm                          | Fast, disk-efficient, strict dependency resolution |
 
 ## Frontend

@@ -1,0 +1,18 @@
+{
+  "toolbar": {
+    "home": "Home",
+    "language": "Language",
+    "switchTo": "Switch to Italian"
+  },
+  "sidebar": {
+    "title": "Playbooks",
+    "empty": "No playbooks yet"
+  },
+  "footer": {
+    "copyright": "Back 2 Basics"
+  },
+  "home": {
+    "welcome": "Welcome to Back 2 Basics",
+    "subtitle": "Micro-learning platform for IT professionals."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "playbooks": [
+    { "slug": "networking", "title": "Networking" },
+    { "slug": "http", "title": "HTTP Protocol" }
+  ]
+}

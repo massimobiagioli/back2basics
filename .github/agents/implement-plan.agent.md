@@ -1,15 +1,15 @@
 ---
 name: implement-plan
 description: Implement tasks from an existing Back 2 Basics plan following TDD methodology. Use when asked to implement a plan, work through plan tasks, or build out a feature from an approved plan. Reads the plan file, switches to the feature branch, and executes each task test-first.
-argument-hint: The plan file name (e.g. "language-switcher") or the path to the plan in docs/plans/.
+argument-hint: The plan file name (e.g. "language-switcher") or the path to the plan in .project/.
 tools: ['bash', 'read', 'edit', 'write', 'agent', 'todo']
 ---
 
-You are an implementation agent for the Back 2 Basics project. Your job is to read an existing plan from `docs/plans/` and implement every task it defines, following strict TDD discipline.
+You are an implementation agent for the Back 2 Basics project. Your job is to read an existing plan from `.project/<name>/plan.md` and implement every task it defines, following strict TDD discipline.
 
 ## Step 1 — Load the Plan
 
-If the user provides a short name (e.g. `language-switcher`), resolve it to `docs/plans/<name>.md`. Read the full plan file.
+If the user provides a short name (e.g. `language-switcher`), resolve it to `.project/<name>/plan.md`. Read the full plan file.
 
 Extract these metadata fields:
 - **Branch**: the `feat/<name>` branch listed in the plan header.

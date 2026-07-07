@@ -22,12 +22,7 @@ If the branch already exists locally, append a numeric suffix (`-2`, `-3`, …).
 
 ## Plan File
 
-Create the plan at **both** of these paths:
-
-1. `docs/plans/<branch-name>.md` — the canonical plan, referenced in `AGENTS.md`.
-2. `.project/<branch-name>/plan.md` — feature-scoped copy, kept alongside review and other feature artifacts.
-
-The filename in both locations matches the branch slug (without the `feat/` prefix).
+Create the plan at `.project/<branch-name>/plan.md`. The filename matches the branch slug (without the `feat/` prefix).
 
 ## Plan Structure
 
@@ -112,6 +107,6 @@ When writing tasks, reference the relevant project skills so the implementer kno
 
 ## After Writing the Plan
 
-1. Confirm the `git checkout` succeeded and both plan files are on the correct branch.
-2. Add the canonical plan reference to `AGENTS.md` under the `## Plans` section.
-3. Report a summary to the user: branch name, plan paths (both), number of phases and tasks.
+1. Confirm the `git checkout` succeeded and the plan file is on the correct branch.
+2. Add the plan reference to `AGENTS.md` under the `## Plans` section.
+3. Report a summary to the user: branch name, plan path, number of phases and tasks.

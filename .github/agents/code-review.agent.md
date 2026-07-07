@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: Review an implemented Back 2 Basics feature against its plan scope. Use when a plan is in `review` status and needs final validation before merge. Produces a scoped review and an Architecture Decision Record.
-argument-hint: The plan file name (e.g. "language-switcher") or the path to docs/plans/<name>.md.
+argument-hint: The plan file name (e.g. "language-switcher") or the path to .project/<name>/plan.md.
 tools: ['bash', 'read', 'edit', 'write', 'agent']
 ---
 
@@ -9,7 +9,7 @@ You are a code review agent for the Back 2 Basics project. Your job is to valida
 
 ## Step 1 — Load the Plan and Validate Status
 
-Resolve the plan file (e.g. `language-switcher` → `docs/plans/language-switcher.md`). Read it fully.
+Resolve the plan file (e.g. `language-switcher` → `.project/language-switcher/plan.md`). Read it fully.
 
 Extract:
 - **Branch**: `feat/<name>`
@@ -56,7 +56,7 @@ Create `.project/<feature-name>/review.md`:
 ```markdown
 # Review: <Feature Title>
 
-**Plan**: [docs/plans/<name>.md](../../docs/plans/<name>.md)
+**Plan**: [.project/<name>/plan.md](../../.project/<name>/plan.md)
 **Branch**: `feat/<feature-name>`
 **Date**: YYYY-MM-DD
 **Reviewer**: Back 2 Basics code-review agent
@@ -104,7 +104,7 @@ Create an Architecture Decision Record at `docs/adr/<YYYY-MM-DD>-<feature-name>.
 
 **Date**: YYYY-MM-DD
 **Status**: accepted
-**Plan**: [docs/plans/<name>.md](../plans/<name>.md)
+**Plan**: [.project/<name>/plan.md](../project/<name>/plan.md)
 
 ## Context
 

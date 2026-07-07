@@ -7,16 +7,23 @@ description: Internationalization patterns for Back 2 Basics — playbook suffix
 
 ## Playbook Content
 
-- Playbooks are static Markdown files in `public/playbooks/`.
-- **Naming convention**: `{slug}_{locale}.md` — e.g. `bgp_IT.md`, `bgp_EN.md`.
-- The slug and locale are extracted from the filename. No frontmatter metadata required.
+- Playbooks are static Markdown files organized in **subdirectories** under `public/playbooks/`.
+- **Naming convention**: `public/playbooks/{slug}/{slug}_{locale}.md` — e.g. `networking/networking_IT.md`.
+- Diagrams (.mmd source, .png rendered) live alongside the markdown in the same subdirectory.
 
 ```
 public/playbooks/
-├── bgp_IT.md
-├── bgp_EN.md
-├── tcp_IT.md
-└── tcp_EN.md
+├── networking/
+│   ├── networking_IT.md
+│   ├── networking_EN.md
+│   ├── tcp-ip-stack.mmd
+│   └── tcp-ip-stack.png
+├── http/
+│   ├── http_IT.md
+│   ├── http_EN.md
+│   ├── http-request-response.mmd
+│   └── http-request-response.png
+└── manifest.json
 ```
 
 ## UI Strings

@@ -1,0 +1,9 @@
+flowchart TD
+    APP[Application Layer\nHTTP, DNS, SSH]
+    TRANS[Transport Layer\nTCP, UDP]
+    NET[Internet Layer\nIP, ICMP]
+    LINK[Link Layer\nEthernet, Wi-Fi]
+    APP -->|data| TRANS
+    TRANS -->|segments| NET
+    NET -->|packets| LINK
+    LINK -->|frames| PHYSICAL[Physical Medium]

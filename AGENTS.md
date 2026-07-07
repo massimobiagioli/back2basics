@@ -35,11 +35,30 @@
 - [Deployment](.agents/skills/deployment/SKILL.md) — Vercel configuration, CI/CD, pre-deploy checklist.
 - [Code Review](.agents/skills/code-review/SKILL.md) — Review scope discipline, review template, ADR format, and per-task checklist.
 
+## Tools
+
+- [render-mermaid](bin/render-mermaid.py) — Python script that converts `.mmd` Mermaid diagram sources to PNG via the mermaid.ink API. Use when creating or updating playbook diagrams.
+  - **No external dependencies** — uses only Python stdlib.
+  - Usage: `python3 bin/render-mermaid.py <input.mmd> <output.png>` or `echo 'graph TD; A-->B' | python3 bin/render-mermaid.py - output.png`
+
+## Diagram Workflow
+
+1. Author Mermaid diagrams in `.mmd` files inside the playbook subdirectory (e.g. `public/playbooks/networking/tcp-ip-stack.mmd`).
+2. Run `bin/render-mermaid.py` to generate the PNG: `python3 bin/render-mermaid.py public/playbooks/networking/tcp-ip-stack.mmd public/playbooks/networking/tcp-ip-stack.png`
+3. Reference the PNG in the Markdown playbook: `![TCP/IP Stack](tcp-ip-stack.png)`
+4. The `usePlaybook` composable auto-resolves relative image paths.
+
+**Never embed Mermaid code blocks directly in Markdown playbooks.** Always pre-render to PNG.
+
 ## Plans
 
-<!-- New plans created by the write-plan agent will be added here. Keep this list up to date. -->
+<!-- New plans created by the write-plan agent will be added here. Plans live in .project/. Keep this list up to date. -->
+
+- [Bootstrap Project](.project/bootstrap-project/plan.md) — Initial project scaffolding: layout shell, i18n, playbook infrastructure, and first two playbooks (Networking, HTTP).
 
 ## ADRs
 
 <!-- New ADRs created by the code-review agent will be added here. Keep this list up to date. -->
+
+- [Bootstrap Project](docs/adr/2026-07-07-bootstrap-project.md) — Initial scaffolding: CSS Grid layout, Pinia stores, Markdown rendering, pre-rendered Mermaid diagrams, locale-first architecture.
 

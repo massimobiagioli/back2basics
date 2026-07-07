@@ -1,0 +1,18 @@
+{
+  "toolbar": {
+    "home": "Home",
+    "language": "Lingua",
+    "switchTo": "Passa all'inglese"
+  },
+  "sidebar": {
+    "title": "Playbooks",
+    "empty": "Nessun playbook disponibile"
+  },
+  "footer": {
+    "copyright": "Back 2 Basics"
+  },
+  "home": {
+    "welcome": "Benvenuto su Back 2 Basics",
+    "subtitle": "Piattaforma di micro-apprendimento per professionisti IT."
+  }
+}
