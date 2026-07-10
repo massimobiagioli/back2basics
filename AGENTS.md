@@ -55,10 +55,12 @@
 <!-- New plans created by the write-plan agent will be added here. Plans live in .project/. Keep this list up to date. -->
 
 - [Bootstrap Project](.project/bootstrap-project/plan.md) — Initial project scaffolding: layout shell, i18n, playbook infrastructure, and first two playbooks (Networking, HTTP).
+- [Rust da zero a dieci](.project/rust-da-zero-a-dieci/plan.md) — Comprehensive Rust playbook: syntax, ownership, design patterns, testing, and a CLI document-repo project. Dual-language (IT/EN).
 
 ## ADRs
 
 <!-- New ADRs created by the code-review agent will be added here. Keep this list up to date. -->
 
 - [Bootstrap Project](docs/adr/2026-07-07-bootstrap-project.md) — Initial scaffolding: CSS Grid layout, Pinia stores, Markdown rendering, pre-rendered Mermaid diagrams, locale-first architecture.
+- [Rust da zero a dieci](docs/adr/2026-07-10-rust-da-zero-a-dieci.md) — Comprehensive Rust playbook: 10 sections, dual-language, 4 Mermaid diagrams, `docrepo` CLI capstone project.
 

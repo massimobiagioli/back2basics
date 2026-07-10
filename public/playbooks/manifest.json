@@ -1,6 +1,7 @@
 {
   "playbooks": [
     { "slug": "networking", "title": "Networking" },
-    { "slug": "http", "title": "HTTP Protocol" }
+    { "slug": "http", "title": "HTTP Protocol" },
+    { "slug": "rust", "title": "Rust da zero a dieci" }
   ]
 }

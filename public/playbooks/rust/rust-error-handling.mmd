@@ -1,0 +1,30 @@
+flowchart TD
+    Start["🚀 Funzione chiamata"] --> Call["fn leggi_file(nome: &str) -> Result&lt;String, Error&gt;"]
+    
+    Call --> Open["File::open(nome) ?"]
+    
+    Open --> CheckOpen{"File aperto?"}
+    CheckOpen -->|"✅ Ok(file)"| Read["file.read_to_string(&mut contenuto) ?"]
+    CheckOpen -->|"❌ Err(e)"| PropagateOpen["? propaga Err(e) al chiamante"]
+    
+    Read --> CheckRead{"Lettura riuscita?"}
+    CheckRead -->|"✅ Ok(_)"| ReturnOk["✅ Ok(contenuto) — successo!"]
+    CheckRead -->|"❌ Err(e)"| PropagateRead["? propaga Err(e) al chiamante"]
+    
+    subgraph Option["📦 Option&lt;T&gt; — Valore Assente"]
+        OptCall["fn trova(id: u32) -> Option&lt;Utente&gt;"]
+        OptCall --> OptCheck{"Trovato?"}
+        OptCheck -->|"✅ Some(utente)"| OptOk["usa utente"]
+        OptCheck -->|"❌ None"| OptNone["? ritorna None"]
+    end
+    
+    subgraph Python["🐍 Confronto: Python"]
+        PyTry["try:"] --> PyCode["f = open('file.txt')"]
+        PyCode --> PyExcept["except FileNotFoundError:"]
+        PyExcept --> PyHandle["gestisci errore"]
+        PyCode --> PySuccess["usa f..."]
+    end
+    
+    PropagateOpen --> Call
+    PropagateRead --> Call
+    ReturnOk --> End["🎉 Valore restituito"]

@@ -15,28 +15,29 @@
     "render-diagrams": "python3 bin/render-mermaid.py public/playbooks/networking/tcp-ip-stack.mmd public/playbooks/networking/tcp-ip-stack.png && python3 bin/render-mermaid.py public/playbooks/http/http-request-response.mmd public/playbooks/http/http-request-response.png"
   },
   "dependencies": {
-    "vue": "^3.5.0",
-    "vue-router": "^4.5.0",
-    "pinia": "^2.3.0",
-    "vue-i18n": "^11.0.0",
-    "markdown-it": "^14.1.0",
     "@unhead/vue": "^1.11.0",
-    "mermaid": "^11.0.0"
+    "markdown-it": "^14.1.0",
+    "mermaid": "^11.0.0",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.0",
+    "vue-i18n": "^11.0.0",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/markdown-it": "^14.1.2",
     "@vitejs/plugin-vue": "^5.2.0",
+    "@vue/eslint-config-typescript": "^14.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-vuejs-accessibility": "^2.4.0",
+    "happy-dom": "^15.0.0",
+    "prettier": "^3.4.0",
+    "sass": "^1.80.0",
+    "shiki": "^1.24.0",
+    "typescript": "~5.6.0",
     "vite": "^6.0.0",
     "vitest": "^2.1.0",
-    "@vue/test-utils": "^2.4.0",
-    "happy-dom": "^15.0.0",
-    "vue-tsc": "^2.2.0",
-    "typescript": "~5.6.0",
-    "sass": "^1.80.0",
-    "@playwright/test": "^1.49.0",
-    "eslint": "^9.0.0",
-    "@vue/eslint-config-typescript": "^14.0.0",
-    "prettier": "^3.4.0",
-    "eslint-plugin-vuejs-accessibility": "^2.4.0",
-    "shiki": "^1.24.0"
+    "vue-tsc": "^2.2.0"
   }
 }

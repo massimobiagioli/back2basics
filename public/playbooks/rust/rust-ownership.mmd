@@ -1,0 +1,26 @@
+flowchart TD
+    subgraph Ownership["🏠 Ownership"]
+        A["let s1 = String::from('ciao')"] -->|"s1 è il proprietario"| B["Heap: 'ciao'"]
+        B -->|"let s2 = s1 (move)"| C["s2 è il nuovo proprietario"]
+        A -.->|"❌ s1 non è più valido"| X1["Use-after-move ERRORE"]
+    end
+
+    subgraph Borrowing["📖 Borrowing (&T)"]
+        D["let s = String::from('ciao')"] -->|"prestito immutabile"| E["fn foo(s: &String)"]
+        E -->|"legge ma non modifica"| F["s.len() ✅"]
+        D -->|"s ancora valido"| G["println!(s) ✅"]
+    end
+
+    subgraph MutableBorrowing["✏️ Mutable Borrowing (&mut T)"]
+        H["let mut s = String::new()"] -->|"prestito mutabile"| I["fn bar(s: &mut String)"]
+        I -->|"modifica"| J["s.push_str('!') ✅"]
+    end
+
+    subgraph Rule["⚡ La Regola d'Oro"]
+        K["&T: TANTI lettori"] -->|"XOR"| L["&mut T: UN SOLO scrittore"]
+        M["MAI entrambi contemporaneamente"]
+    end
+
+    Ownership --> Borrowing
+    Borrowing --> MutableBorrowing
+    MutableBorrowing --> Rule

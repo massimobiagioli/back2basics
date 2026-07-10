@@ -1,0 +1,53 @@
+flowchart TD
+    User["👤 Utente"] --> CLI["💻 Terminale: docrepo &lt;comando&gt;"]
+    
+    CLI --> Main["main.rs — Clap Parser"]
+    
+    Main --> Init["init"]
+    Main --> Add["add &lt;file&gt; --tags"]
+    Main --> List["list [--tag X]"]
+    Main --> Search["search &lt;query&gt;"]
+    Main --> Remove["remove &lt;id&gt;"]
+    
+    Init --> RepoDir[".docrepo/ directory"]
+    RepoDir --> IndexFile["index.json"]
+    
+    Add --> FS["File System"]
+    FS -->|"canonicalize()"| AddPath["Percorso assoluto"]
+    AddPath -->|"Uuid::new_v4()"| NewDoc["Nuovo Documento"]
+    NewDoc --> IndexFile
+    
+    List --> IndexFile
+    Search --> IndexFile
+    Remove --> IndexFile
+    
+    IndexFile --> ReadWrite["serde_json::from_str / to_string_pretty"]
+    
+    subgraph Models["📦 models.rs"]
+        Doc["Documento: id, titolo, percorso, tags, aggiunto_il"]
+        Idx["Indice: documenti[], versione"]
+    end
+    
+    subgraph Repo["🔧 repo.rs — Logica"]
+        FnInit["init()"]
+        FnAdd["aggiungi()"]
+        FnList["elenca()"]
+        FnSearch["cerca()"]
+        FnRemove["rimuovi()"]
+    end
+    
+    Main --> Repo
+    Repo --> Models
+    Models --> IndexFile
+    
+    subgraph Errors["🛡️ Error Handling (anyhow)"]
+        Anyhow["anyhow::Result&lt;T&gt;"]
+        Context[".context('messaggio')"]
+        Bail["bail!('errore')"]
+    end
+    
+    Repo --> Errors
+    
+    style IndexFile fill:#f9f,stroke:#333,stroke-width:2px
+    style Main fill:#bbf,stroke:#333,stroke-width:2px
+    style FS fill:#bfb,stroke:#333,stroke-width:2px
