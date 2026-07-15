@@ -2,6 +2,8 @@
   "playbooks": [
     { "slug": "networking", "title": "Networking" },
     { "slug": "http", "title": "HTTP Protocol" },
-    { "slug": "rust", "title": "Rust da zero a dieci" }
+    { "slug": "rust", "title": "Rust da zero a dieci" },
+    { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
+    { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" }
   ]
 }
