@@ -1,0 +1,8 @@
+flowchart TD
+    A[I have a task to solve] --> B{Is a wrong answer<br>acceptable sometimes?}
+    B -->|No, must be exact| C[Use traditional code<br>rules, math, database]
+    B -->|Yes, a human reviews it| D{Does it involve language,<br>text, images or ideas?}
+    D -->|Yes| E[Good fit for AI]
+    D -->|No| F{Is it repetitive and<br>hard to write rules for?}
+    F -->|Yes| E
+    F -->|No| C

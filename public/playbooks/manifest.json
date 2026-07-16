@@ -1,6 +1,7 @@
 {
   "playbooks": [
     { "slug": "dotnet", "title": ".NET Pragmatic Approach" },
+    { "slug": "ai", "title": "AI Kickstart" },
     { "slug": "aws", "title": "AWS for Lazy Developers" },
     { "slug": "css", "title": "CSS for Backenders" },
     { "slug": "docker", "title": "Dockerize It" },

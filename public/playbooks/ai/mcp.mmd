@@ -1,0 +1,10 @@
+flowchart LR
+    subgraph AI[AI Assistant - MCP client]
+        L[LLM]
+    end
+    L <-->|MCP protocol| S1[MCP Server: Files]
+    L <-->|MCP protocol| S2[MCP Server: Database]
+    L <-->|MCP protocol| S3[MCP Server: Calendar]
+    S1 --- R1[(Your documents)]
+    S2 --- R2[(Your data)]
+    S3 --- R3[(Your events)]

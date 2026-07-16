@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant U as User
+    participant A as App (RAG)
+    participant D as Document store
+    participant L as LLM
+    U->>A: How many vacation days do I have?
+    A->>D: Search relevant documents
+    D->>A: HR policy, page 12
+    A->>L: Question + HR policy page 12
+    L->>A: You have 22 vacation days per year
+    A->>U: Answer based on YOUR documents

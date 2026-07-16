@@ -1,0 +1,6 @@
+flowchart LR
+    A[Your text prompt] --> B[Split into tokens]
+    B --> C[LLM predicts the most likely next token]
+    C --> D[Token added to the answer]
+    D -->|repeat until done| C
+    D --> E[Complete answer]
