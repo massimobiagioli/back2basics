@@ -5,6 +5,7 @@
     { "slug": "css", "title": "CSS for Backenders" },
     { "slug": "http", "title": "HTTP Protocol" },
     { "slug": "networking", "title": "Networking" },
+    { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
     { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
     { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
     { "slug": "rust", "title": "Rust da zero a dieci" }
