@@ -1,6 +1,7 @@
 {
   "playbooks": [
     { "slug": "dotnet", "title": ".NET Pragmatic Approach" },
+    { "slug": "aws", "title": "AWS for Lazy Developers" },
     { "slug": "http", "title": "HTTP Protocol" },
     { "slug": "networking", "title": "Networking" },
     { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },

@@ -1,0 +1,8 @@
+flowchart TD
+    PUSH["git push su main"] --> LINT["Job: lint-test (ruff + pytest)"]
+    LINT -->|ok| API["Job: deploy-api"]
+    LINT -->|ok| LAMBDA["Job: deploy-lambda"]
+    API --> ECR["Build e push immagine su ECR"]
+    ECR --> ECS["Aggiorna il servizio ECS (Fargate)"]
+    LAMBDA --> ZIP["Impacchetta function.zip"]
+    ZIP --> LAMBDAUPDATE["aws lambda update-function-code"]
