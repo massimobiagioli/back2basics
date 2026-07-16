@@ -1,0 +1,24 @@
+graph TD
+    subgraph Domain["Domain (nucleo)"]
+        ENTITIES[Entita e Value Object]
+        INTERFACES[Interfacce Repository]
+    end
+
+    subgraph Application["Application"]
+        SERVICES[Servizi / Use Case]
+        DTO[DTO]
+    end
+
+    subgraph Infrastructure["Infrastructure"]
+        EFCORE[DbContext EF Core]
+        REPOIMPL[Repository concreti]
+    end
+
+    subgraph Api["Api (Presentation)"]
+        ENDPOINTS[Minimal API Endpoints]
+    end
+
+    Api -->|dipende da| Application
+    Infrastructure -->|implementa le interfacce di| Domain
+    Application -->|dipende da| Domain
+    Api -->|assembla con DI| Infrastructure

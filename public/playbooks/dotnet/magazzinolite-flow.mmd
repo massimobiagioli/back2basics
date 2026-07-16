@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Client
+    participant Api as Minimal API
+    participant Svc as OrderService
+    participant Repo as IOrderRepository
+    participant DB as SQLite (EF Core)
+
+    Client->>Api: POST /api/orders
+    Api->>Svc: CreateOrderAsync(dto)
+    Svc->>Repo: GetProductAsync(id)
+    Repo->>DB: SELECT
+    DB-->>Repo: Product
+    Repo-->>Svc: Product
+    Svc->>Svc: Applica le regole di business
+    Svc->>Repo: AddAsync(order)
+    Repo->>DB: INSERT
+    Svc-->>Api: OrderDto
+    Api-->>Client: 201 Created

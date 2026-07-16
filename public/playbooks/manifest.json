@@ -1,9 +1,10 @@
 {
   "playbooks": [
-    { "slug": "networking", "title": "Networking" },
+    { "slug": "dotnet", "title": ".NET Pragmatic Approach" },
     { "slug": "http", "title": "HTTP Protocol" },
-    { "slug": "rust", "title": "Rust da zero a dieci" },
+    { "slug": "networking", "title": "Networking" },
+    { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
     { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
-    { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" }
+    { "slug": "rust", "title": "Rust da zero a dieci" }
   ]
 }
