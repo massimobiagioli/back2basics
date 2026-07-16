@@ -3,6 +3,7 @@
     { "slug": "dotnet", "title": ".NET Pragmatic Approach" },
     { "slug": "aws", "title": "AWS for Lazy Developers" },
     { "slug": "css", "title": "CSS for Backenders" },
+    { "slug": "docker", "title": "Dockerize It" },
     { "slug": "http", "title": "HTTP Protocol" },
     { "slug": "networking", "title": "Networking" },
     { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
