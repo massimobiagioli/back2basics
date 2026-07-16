@@ -1,0 +1,9 @@
+flowchart TB
+    subgraph SYM[SYMMETRIC: one shared key]
+        A1[Alice] -- encrypts with KEY --> C1[Ciphertext]
+        C1 -- decrypts with the SAME KEY --> B1[Bob]
+    end
+    subgraph ASYM[ASYMMETRIC: key pair]
+        A2[Alice] -- encrypts with PUBLIC key of Bob --> C2[Ciphertext]
+        C2 -- decrypts with his PRIVATE key --> B2[Bob]
+    end

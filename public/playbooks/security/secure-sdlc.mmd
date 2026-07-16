@@ -1,0 +1,7 @@
+flowchart LR
+    D[Design<br>threat modeling] --> C[Code<br>secure patterns + review]
+    C --> T[Test<br>security tests + scanners]
+    T --> R[Release<br>secrets + hardening]
+    R --> M[Monitor<br>logs + alerts]
+    M --> U[Update<br>patch dependencies]
+    U --> D

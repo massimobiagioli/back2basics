@@ -9,6 +9,7 @@
     { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
     { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
     { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
-    { "slug": "rust", "title": "Rust da zero a dieci" }
+    { "slug": "rust", "title": "Rust da zero a dieci" },
+    { "slug": "security", "title": "Security First" }
   ]
 }
