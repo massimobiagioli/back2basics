@@ -13,6 +13,7 @@
 - **Agent Index**: Every agent defined under `.github/agents/` must be referenced in the Agents section below. Keep the list up to date.
 - **ADR Index**: Every ADR created under `docs/adr/` must be referenced in the ADRs section below. Keep the list up to date.
 - **Prompt Index**: Every prompt defined under `.github/prompts/` must be referenced in the Prompts section below. Keep the list up to date.
+- **Playbook Commit**: After creating or updating a playbook under `public/playbooks/`, always commit and push the changes.
 
 ## Agents
 
