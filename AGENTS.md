@@ -14,6 +14,7 @@
 - **ADR Index**: Every ADR created under `docs/adr/` must be referenced in the ADRs section below. Keep the list up to date.
 - **Prompt Index**: Every prompt defined under `.github/prompts/` must be referenced in the Prompts section below. Keep the list up to date.
 - **Playbook Commit**: After creating or updating a playbook under `public/playbooks/`, always commit and push the changes.
+- **Playbook Languages**: Every playbook must be created in both Italian (`{slug}_IT.md`) and English (`{slug}_EN.md`). Never ship a playbook in only one language.
 
 ## Agents
 
