@@ -9,6 +9,7 @@
     { "slug": "fastify", "title": "Fastify + TypeScript + Prisma: uno stack gettonato" },
     { "slug": "http", "title": "HTTP Protocol" },
     { "slug": "networking", "title": "Networking" },
+    { "slug": "bash", "title": "Non avere paura del Bash" },
     { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
     { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
     { "slug": "ruby", "title": "Ruby: Le Parti Belle" },

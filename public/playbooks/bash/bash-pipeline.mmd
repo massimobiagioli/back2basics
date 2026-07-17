@@ -1,0 +1,6 @@
+graph LR
+    A["cat access.log<br/>(tutte le righe)"] -->|righe di testo| B["grep 'ERROR'<br/>(solo le righe con errore)"]
+    B -->|righe filtrate| C["awk '{print $2}'<br/>(estrae solo l'IP)"]
+    C -->|solo gli IP| D["sort<br/>(li mette in ordine)"]
+    D -->|IP ordinati| E["uniq -c<br/>(conta i duplicati)"]
+    E -->|risultato finale| F["output:<br/>quante volte ogni IP ha errore"]

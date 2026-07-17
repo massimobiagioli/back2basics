@@ -1,0 +1,6 @@
+graph TD
+    A["#!/usr/bin/env bash (shebang)"] --> B["set -euo pipefail (modalita sicura)"]
+    B --> C[Variabili e costanti]
+    C --> D[Funzioni riutilizzabili]
+    D --> E["Logica principale (main)"]
+    E --> F["exit code (0 = tutto ok, diverso da 0 = errore)"]
