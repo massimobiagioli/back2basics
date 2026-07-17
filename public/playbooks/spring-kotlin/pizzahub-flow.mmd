@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Client
+    participant Ctrl as OrdineRestController
+    participant Svc as OrdineService
+    participant Repo as PizzaRepository
+    participant DB as Database (Spring Data JPA)
+
+    Client->>Ctrl: POST /api/ordini
+    Ctrl->>Svc: creaOrdine(dto)
+    Svc->>Repo: findById(pizzaId)
+    Repo->>DB: SELECT
+    DB-->>Repo: Pizza
+    Repo-->>Svc: Pizza
+    Svc->>Svc: applica le regole di dominio
+    Svc->>Repo: save(ordine)
+    Repo->>DB: INSERT
+    Svc-->>Ctrl: OrdineDto
+    Ctrl-->>Client: 201 Created
