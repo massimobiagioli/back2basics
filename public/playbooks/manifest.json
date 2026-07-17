@@ -12,6 +12,7 @@
     { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
     { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
     { "slug": "rust", "title": "Rust da zero a dieci" },
-    { "slug": "security", "title": "Security First" }
+    { "slug": "security", "title": "Security First" },
+    { "slug": "spring", "title": "Booting Spring Boot — Java Edition" }
   ]
 }
