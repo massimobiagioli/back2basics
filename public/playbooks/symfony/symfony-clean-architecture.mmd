@@ -1,0 +1,25 @@
+graph TD
+    subgraph Domain["Domain (nucleo)"]
+        ENTITIES[Entita e Value Object]
+        INTERFACES[Interfacce Repository - Port]
+    end
+
+    subgraph Application["Application"]
+        SERVICES[Service - Use Case]
+        DTO[DTO]
+    end
+
+    subgraph Infrastructure["Infrastructure"]
+        DOCTRINE[Doctrine ORM]
+        REPOIMPL[Repository concreti]
+    end
+
+    subgraph Presentation["Presentation"]
+        MVC[Controller + Twig]
+        API[API Controller]
+    end
+
+    Presentation -->|dipende da| Application
+    Infrastructure -->|implementa le interfacce di| Domain
+    Application -->|dipende da| Domain
+    Presentation -->|assemblato con DI| Infrastructure

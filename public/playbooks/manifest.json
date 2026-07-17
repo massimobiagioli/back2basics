@@ -14,6 +14,7 @@
     { "slug": "rust", "title": "Rust da zero a dieci" },
     { "slug": "security", "title": "Security First" },
     { "slug": "spring", "title": "Booting Spring Boot — Java Edition" },
-    { "slug": "spring-kotlin", "title": "Booting Spring Boot — Kotlin Edition" }
+    { "slug": "spring-kotlin", "title": "Booting Spring Boot — Kotlin Edition" },
+    { "slug": "symfony", "title": "Symfony is Alive and Kicking" }
   ]
 }
