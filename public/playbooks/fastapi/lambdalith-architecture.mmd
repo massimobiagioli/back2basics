@@ -1,0 +1,25 @@
+graph TD
+    subgraph Microservizi["Non e questo l'obiettivo: una Lambda per endpoint"]
+        AG1[API Gateway]
+        L1[Lambda /pizze]
+        L2[Lambda /ordini]
+        L3[Lambda /clienti]
+        AG1 --> L1
+        AG1 --> L2
+        AG1 --> L3
+    end
+
+    subgraph Lambdalith["Lambdalith: una sola Lambda per l'intera app"]
+        AG2[API Gateway]
+        LAMBDA["AWS Lambda - Mangum adapter"]
+        APP["FastAPI app - un solo deployment"]
+        R1[GET /api/pizze]
+        R2[POST /api/ordini]
+        R3[GET /api/ordini/id]
+
+        AG2 -->|proxy integration| LAMBDA
+        LAMBDA --> APP
+        APP --> R1
+        APP --> R2
+        APP --> R3
+    end

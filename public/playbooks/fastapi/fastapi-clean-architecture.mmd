@@ -1,0 +1,25 @@
+graph TD
+    subgraph Domain["Domain (nucleo)"]
+        ENTITIES[Entita e Value Object]
+        INTERFACES[Interfacce Repository - Port]
+    end
+
+    subgraph Application["Application"]
+        SERVICES[Service - Use Case]
+        SCHEMAS[Pydantic Schema]
+    end
+
+    subgraph Infrastructure["Infrastructure"]
+        SQLALCHEMY[SQLAlchemy ORM]
+        REPOIMPL[Repository concreti]
+    end
+
+    subgraph Presentation["Presentation"]
+        ROUTER[FastAPI Router]
+        DEPENDS[Dependency Injection - Depends]
+    end
+
+    Presentation -->|dipende da| Application
+    Infrastructure -->|implementa le interfacce di| Domain
+    Application -->|dipende da| Domain
+    Presentation -->|assemblato con DI| Infrastructure
