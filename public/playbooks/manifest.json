@@ -5,6 +5,7 @@
     { "slug": "aws", "title": "AWS for Lazy Developers" },
     { "slug": "css", "title": "CSS for Backenders" },
     { "slug": "docker", "title": "Dockerize It" },
+    { "slug": "fastify", "title": "Fastify + TypeScript + Prisma: uno stack gettonato" },
     { "slug": "http", "title": "HTTP Protocol" },
     { "slug": "networking", "title": "Networking" },
     { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
