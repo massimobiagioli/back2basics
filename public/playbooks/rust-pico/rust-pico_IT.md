@@ -218,6 +218,14 @@ Leggiamolo riga per riga:
 
 > ⚠️ **Attenzione Pico W**: sul Pico **W** il LED integrato **non** è sul GPIO 25 — è collegato al chip Wi-Fi CYW43 (te lo ricordi dalla sezione 2?). Per farlo lampeggiare devi prima inizializzare il driver `cyw43` e poi usare `control.gpio_set(0, true).await`. Per imparare, parti con un Pico normale o con un LED esterno collegato a un GPIO qualsiasi: eviti questa complicazione al primo giro.
 
+### Il collegamento (LED esterno)
+
+Se usi un LED esterno su breadboard invece di quello integrato, il collegamento è questo (in tal caso cambia `PIN_25` in `PIN_15` nel codice):
+
+![Collegamento del LED: GPIO 15 → resistenza 330 Ω → LED → GND](led-wiring.png)
+
+Da sinistra a destra: il GPIO 15 spinge la corrente attraverso una **resistenza da 330 Ω** (indispensabile: senza, il LED si brucia), poi nella gamba lunga del LED (**anodo, +**), esce dalla gamba corta (**catodo, −**) e torna a **GND**. La resistenza limita la corrente; l'ordine anodo/catodo conta, perché il LED conduce in una sola direzione.
+
 ### Passo 6 — Caricarlo sul chip
 
 ```bash
@@ -230,7 +238,74 @@ Questo comando compila, e poi il `runner` che abbiamo messo in `.cargo/config.to
 
 ---
 
-## 6. Leggere il sensore AHT20 via I2C
+## 6. Gli strumenti del mestiere
+
+**In pillole**: per lavorare col Pico ti bastano pochi strumenti, tutti gratuiti e da riga di comando. Ognuno copre un momento del ciclo: **compilare** il codice, **caricarlo** sul chip (flash), **guardare i log** e **fare debug**. Se ricordi questi quattro verbi, sai sempre quale strumento tirare fuori.
+
+| Strumento | A cosa serve | Quando lo usi |
+|---|---|---|
+| **rustup** | Installa Rust e i "target" (come quello del Pico) | Una volta sola, all'inizio |
+| **cargo** | Compila il progetto e scarica le dipendenze | Ogni build |
+| **probe-rs** | Carica il firmware, mostra i log e fa debug | A ogni caricamento |
+| **defmt** | Il sistema di log ultraleggero (il "println" dell'embedded) | Nel codice, sempre |
+| **elf2uf2-rs** | Converte il binario nel formato `.uf2` (metodo BOOTSEL) | Solo se non hai una sonda |
+
+### Compilare: `rustup` + `cargo`
+
+Sono gli stessi due strumenti del Rust "normale", con un dettaglio in più: il **target**, cioè il tipo di processore per cui compili.
+
+```bash
+rustup target add thumbv6m-none-eabi   # una volta sola: aggiungi il target del Pico
+cargo build --release                   # compila in modalità ottimizzata
+```
+
+> 💡 **Tip**: sull'embedded il `--release` **non è opzionale come sul PC**. Una build di debug produce un binario molto più grande e lento, che a volte non entra nemmeno nella flash o è troppo lento per rispettare i tempi dell'hardware. Sul Pico si lavora quasi sempre in `--release`.
+
+### Caricare (flash): due strade
+
+Caricare il firmware significa scrivere il tuo programma nella flash del chip. Ci sono due modi, uno "serio" e uno "veloce".
+
+**1. Con una sonda di debug (`probe-rs`) — la strada consigliata.**
+
+```bash
+cargo run --release   # compila, CARICA e mostra i log, tutto in un colpo
+```
+
+Grazie al `runner` che abbiamo messo in `.cargo/config.toml`, `cargo run` non lancia il programma sul tuo PC ma lo spedisce sul Pico tramite una **sonda di debug**. Ti serve un piccolo hardware che fa da ponte fra il PC e il chip — e la buona notizia è che può essere un **secondo Pico** da pochi euro.
+
+**2. Senza sonda (BOOTSEL + `.uf2`) — la strada veloce.**
+
+```bash
+# converte il binario nel formato che il Pico capisce da chiavetta
+elf2uf2-rs target/thumbv6m-none-eabi/release/pico-blink pico-blink.uf2
+# poi: tieni premuto BOOTSEL, collega l'USB → il Pico appare come un disco
+# "RPI-RP2", ci trascini dentro il .uf2 e riparte da solo
+```
+
+🧠 **Analogia**: la sonda di debug è come avere una telecamera dentro l'officina mentre lavori sul motore — vedi tutto, puoi fermarti, ispezionare. Il metodo BOOTSEL è come consegnare la macchina, chiudere il cofano e riaccenderla: funziona, ma se qualcosa va storto sei al buio. Per imparare, la sonda vale ogni centesimo.
+
+### Guardare i log: `defmt`
+
+Sul bare metal non c'è un terminale, quindi niente `println!`. Al suo posto c'è **`defmt`** ("deferred formatting"): scrivi log normalissimi nel codice…
+
+```rust
+use defmt::info;
+info!("Temperatura: {} C", temp);
+```
+
+…e `probe-rs`, mentre il chip gira, te li mostra in tempo reale nel terminale del PC. Il trucco di `defmt` è che il testo del messaggio **resta sul PC**: sul chip viaggiano solo pochi byte, così i log pesano pochissimo — fondamentale su un dispositivo così piccolo.
+
+### Fare debug: ancora `probe-rs`
+
+La stessa sonda che carica il firmware ti permette anche di **fermare il programma su un breakpoint**, guardare le variabili e procedere riga per riga — esattamente come un debugger su PC. Puoi farlo da riga di comando o, più comodamente, dall'editor: **VS Code** con l'estensione `probe-rs`, oppure la classica estensione Cortex-Debug.
+
+🧠 **La regola d'oro**: **un solo strumento, `probe-rs`, copre tre dei quattro verbi** — carica, mostra i log e fa debug. Per questo, all'inizio, l'unico vero investimento è procurarti una sonda (un secondo Pico va benissimo) e configurare `probe-rs` una volta. Fatto quello, il ciclo "modifica → `cargo run` → guarda i log" diventa fluido come lo sviluppo su PC.
+
+> 💡 **Tip**: il modo più economico per avere una sonda è caricare su un **secondo Pico** il firmware ufficiale **"debugprobe"**: lo colleghi al Pico "vero" con tre fili e diventa la tua sonda permanente. Due Pico (~8 €) e hai un ambiente di sviluppo completo per sempre.
+
+---
+
+## 7. Leggere il sensore AHT20 via I2C
 
 **In pillole**: **I2C** è un protocollo che fa dialogare più dispositivi su appena due fili. Ogni dispositivo ha un "indirizzo", e il Pico fa da direttore d'orchestra che chiede i dati a turno.
 
@@ -268,7 +343,7 @@ async fn leggi_sensore(i2c: I2c<'static, I2C0, i2c::Async>) {
 
 ---
 
-## 7. Salvare i dati nella flash con `sequential-storage`
+## 8. Salvare i dati nella flash con `sequential-storage`
 
 **In pillole**: il Pico non ha un disco, ma ha la **memoria flash** (quella dove vive il programma). Possiamo usarne una porzione per salvare le ultime letture e la configurazione, così sopravvivono anche a un riavvio o a un'interruzione di corrente.
 
@@ -303,7 +378,7 @@ queue::push(
 
 ---
 
-## 8. Wi-Fi: prima ti configuro, poi ti connetto
+## 9. Wi-Fi: prima ti configuro, poi ti connetto
 
 **In pillole**: il Pico W ha un problema d'uovo e gallina — per connettersi al Wi-Fi di casa ha bisogno della password, ma senza schermo né tastiera come gliela diamo? La soluzione elegante: al primo avvio il Pico *diventa lui stesso* una rete Wi-Fi.
 
@@ -332,7 +407,7 @@ client.send_message(
 
 ---
 
-## 9. Il quadro completo: il datalogger
+## 10. Il quadro completo: il datalogger
 
 **In pillole**: mettiamo insieme tutti i pezzi. Ognuno dei mattoncini che abbiamo visto — sensore, Embassy, flash, Wi-Fi, MQTT — occupa il suo posto in un'unica architettura coerente.
 
@@ -349,51 +424,67 @@ Ecco il flusso, seguendo la figura:
 
 > 💡 **Tip**: nota come ogni componente fa **una cosa sola**. Questo non è solo eleganza: su un chip con 264 KB di RAM, task piccoli e ben separati sono più facili da far stare in memoria, da testare e da debuggare. La stessa filosofia "Unix" delle pipe di Bash, applicata al silicio.
 
-### Il codice, tutto insieme
+### Il collegamento sulla breadboard
 
-Come faranno due task (uno che legge il sensore, uno che gestisce la rete) a scambiarsi le letture senza pestarsi i piedi? La risposta di Embassy è un **canale** (`Channel`): una struttura sicura per far viaggiare dati da un task all'altro.
+Prima del codice, i fili. Il sensore AHT20 si collega al Pico con appena **quattro cavi** — due per l'alimentazione, due per l'I2C:
+
+![Collegamento del sensore AHT20 al Pico W: VIN→3V3, GND→GND, SDA→GPIO 4, SCL→GPIO 5](breadboard-wiring.png)
+
+| Filo dell'AHT20 | Va al pin del Pico | A cosa serve |
+|---|---|---|
+| **VIN** | 3V3 (pin 36) | Alimentazione a 3.3V |
+| **GND** | GND (pin 38) | Massa comune |
+| **SDA** | GPIO 4 (pin 6) | I dati dell'I2C |
+| **SCL** | GPIO 5 (pin 7) | Il "metronomo" dell'I2C |
+
+Questi due pin — GPIO 4 e GPIO 5 — sono esattamente quelli che ritrovi nel codice, alla riga `I2c::new_async(p.I2C0, p.PIN_5, p.PIN_4, ...)`. Il collegamento fisico e il software devono sempre combaciare.
+
+### Il codice, diviso per responsabilità
+
+Un progetto vero **non sta tutto in `main.rs`**: si divide in più file, uno per ogni responsabilità. È la stessa filosofia delle pipe di Bash — ogni pezzo fa una cosa sola e la fa bene. Ecco come organizziamo il datalogger:
+
+```text
+src/
+├── main.rs      # punto d'ingresso: accende l'hardware e avvia i task
+├── types.rs     # i tipi condivisi: la Lettura e il canale fra i task
+├── sensor.rs    # il PRODUTTORE: legge il sensore
+└── network.rs   # il CONSUMATORE: salva in flash e pubblica via MQTT
+```
+
+Vediamo un file alla volta. La domanda di fondo: come fanno due task (uno che legge il sensore, uno che gestisce la rete) a scambiarsi le letture senza pestarsi i piedi? La risposta di Embassy è un **canale** (`Channel`), una struttura sicura per far viaggiare dati da un task all'altro. Lo definiamo nel file condiviso.
+
+**`src/types.rs` — la roba condivisa.** Qui vivono le cose che tutti gli altri file usano: la struttura `Lettura` e il canale che li collega. Tenerle separate evita le dipendenze circolari — `sensor` e `network` non si conoscono fra loro, conoscono solo `types`.
 
 ```rust
-#![no_std]
-#![no_main]
-
-use embassy_executor::Spawner;
-use embassy_rp::i2c::{self, I2c};
-use embassy_rp::peripherals::I2C0;
 use embassy_sync::blocking_mutex::raw::ThreadModeRawMutex;
 use embassy_sync::channel::Channel;
-use embassy_time::{Duration, Timer};
-use defmt::info;
-use {defmt_rtt as _, panic_probe as _};
 
 // Una lettura del sensore: il "pacchetto" che viaggia fra i task.
+// `pub` = visibile dagli altri file del progetto.
 #[derive(Clone, Copy)]
-struct Lettura {
-    temperatura: f32,
-    umidita: f32,
+pub struct Lettura {
+    pub temperatura: f32,
+    pub umidita: f32,
 }
 
 // Il canale che collega chi PRODUCE letture a chi le CONSUMA.
 // Capienza 8: se il consumatore è lento, fino a 8 letture restano in coda.
-static CANALE: Channel<ThreadModeRawMutex, Lettura, 8> = Channel::new();
+pub static CANALE: Channel<ThreadModeRawMutex, Lettura, 8> = Channel::new();
+```
 
-#[embassy_executor::main]
-async fn main(spawner: Spawner) {
-    // 1. Accendi l'hardware (come nel blink della sezione 5)
-    let p = embassy_rp::init(Default::default());
+**`src/sensor.rs` — il produttore.** Un solo compito: leggere l'AHT20 ogni 10 secondi e appoggiare la lettura sul canale. Non sa nulla di Wi-Fi o MQTT.
 
-    // 2. Prepara l'I2C per il sensore (SDA = GPIO4, SCL = GPIO5)
-    let i2c = I2c::new_async(p.I2C0, p.PIN_5, p.PIN_4, Irqs, i2c::Config::default());
+```rust
+use embassy_rp::i2c::{self, I2c};
+use embassy_rp::peripherals::I2C0;
+use embassy_time::{Duration, Timer};
 
-    // 3. Avvia i due task. main() finisce QUI, ma i task continuano
-    //    a girare da soli: è l'executor di Embassy a farli avanzare.
-    spawner.spawn(task_sensore(i2c)).unwrap();
-    spawner.spawn(task_persisti_e_pubblica()).unwrap();
-}
+// `crate::` significa "dalla radice del nostro progetto": prendiamo
+// la Lettura e il canale definiti in types.rs
+use crate::types::{Lettura, CANALE};
 
-// PRODUTTORE — legge il sensore ogni 10 secondi e mette la lettura sul canale
 #[embassy_executor::task]
-async fn task_sensore(i2c: I2c<'static, I2C0, i2c::Async>) {
+pub async fn task_sensore(i2c: I2c<'static, I2C0, i2c::Async>) {
     let mut sensore = aht20::Aht20::new(i2c).await.unwrap();
     loop {
         let m = sensore.measure().await.unwrap();
@@ -406,12 +497,18 @@ async fn task_sensore(i2c: I2c<'static, I2C0, i2c::Async>) {
         Timer::after(Duration::from_secs(10)).await;
     }
 }
+```
 
-// CONSUMATORE — aspetta le letture, le salva in flash e le pubblica via MQTT
+**`src/network.rs` — il consumatore.** L'altro capo del nastro: aspetta le letture, le salva in flash e le pubblica via MQTT. Non sa nulla del sensore, sa solo che dal canale arrivano delle `Lettura`.
+
+```rust
+use defmt::info;
+use crate::types::CANALE;
+
 #[embassy_executor::task]
-async fn task_persisti_e_pubblica() {
-    // ...qui va la connessione Wi-Fi (AP → client) e il client MQTT,
-    //    come descritto nella sezione 8...
+pub async fn task_rete() {
+    // ...qui vanno la connessione Wi-Fi (AP → client) e il client MQTT,
+    //    come descritto nella sezione 9...
     loop {
         // `receive` si blocca (a costo zero) finché non arriva una lettura.
         let lettura = CANALE.receive().await;
@@ -429,21 +526,53 @@ async fn task_persisti_e_pubblica() {
 }
 ```
 
+**`src/main.rs` — il direttore d'orchestra.** Corto e leggibile: dichiara i moduli, accende l'hardware e avvia i due task. Tutta la logica vera sta negli altri file.
+
+```rust
+#![no_std]
+#![no_main]
+
+// Dichiara i tre file come "moduli" del nostro progetto
+mod types;
+mod sensor;
+mod network;
+
+use embassy_executor::Spawner;
+use embassy_rp::i2c::{self, I2c};
+use {defmt_rtt as _, panic_probe as _};
+
+#[embassy_executor::main]
+async fn main(spawner: Spawner) {
+    // 1. Accendi l'hardware (come nel blink della sezione 5)
+    let p = embassy_rp::init(Default::default());
+
+    // 2. Prepara l'I2C per il sensore (SDA = GPIO4, SCL = GPIO5)
+    let i2c = I2c::new_async(p.I2C0, p.PIN_5, p.PIN_4, Irqs, i2c::Config::default());
+
+    // 3. Avvia i due task. main() finisce QUI, ma i task continuano
+    //    a girare da soli: è l'executor di Embassy a farli avanzare.
+    spawner.spawn(sensor::task_sensore(i2c)).unwrap();
+    spawner.spawn(network::task_rete()).unwrap();
+}
+```
+
+🧠 **Analogia**: pensa ai file come ai reparti di una cucina. `types.rs` è la dispensa condivisa (gli ingredienti che usano tutti). `sensor.rs` è chi prepara i piatti, `network.rs` è chi li serve ai tavoli, e `main.rs` è lo chef che apre il locale e dice a ognuno "vai, comincia". Nessun reparto deve sapere come lavorano gli altri: si passano i piatti attraverso il "passe" (il canale).
+
 Seguiamo il percorso di un singolo dato, passo per passo:
 
-1. **`main` fa solo il cablaggio.** Inizializza l'hardware, prepara l'I2C, avvia i due task e… finisce. Non c'è un `loop` in `main`: la vita del programma sta tutta dentro i task. Questo è il cuore del modello Embassy.
-2. **Il `task_sensore` produce.** Ogni 10 secondi legge l'AHT20 e mette una `Lettura` sul canale con `CANALE.send(...)`. Non sa (e non gli importa) chi la userà.
-3. **Il canale disaccoppia i due mondi.** È il "nastro trasportatore": il produttore ci appoggia sopra le letture, il consumatore le raccoglie quando è pronto. Se il consumatore è impegnato (per esempio sta riconnettendo il Wi-Fi), le letture si accumulano in coda invece di perdersi.
-4. **Il `task_persisti_e_pubblica` consuma.** Con `CANALE.receive().await` aspetta — dormendo, senza sprecare corrente — finché non arriva una lettura. Quando arriva, la **salva in flash** (così è al sicuro anche se il Wi-Fi cade) e la **pubblica via MQTT**.
-5. **Il broker fa il resto.** Da lì in poi, come abbiamo visto nella sezione 8, chiunque sia sottoscritto al topic riceve il dato.
+1. **`main.rs` fa solo il cablaggio.** Dichiara i moduli, accende l'hardware, prepara l'I2C, avvia i due task e… finisce. Non c'è un `loop` in `main`: la vita del programma sta tutta nei task. È il cuore del modello Embassy.
+2. **`sensor.rs` produce.** Ogni 10 secondi legge l'AHT20 e mette una `Lettura` sul canale con `CANALE.send(...)`. Non sa (e non gli importa) chi la userà.
+3. **Il canale (`types.rs`) disaccoppia i due mondi.** È il "nastro trasportatore": il produttore ci appoggia sopra le letture, il consumatore le raccoglie quando è pronto. Se il consumatore è impegnato (per esempio sta riconnettendo il Wi-Fi), le letture si accumulano in coda invece di perdersi.
+4. **`network.rs` consuma.** Con `CANALE.receive().await` aspetta — dormendo, senza sprecare corrente — finché non arriva una lettura. Quando arriva, la **salva in flash** (così è al sicuro anche se il Wi-Fi cade) e la **pubblica via MQTT**.
+5. **Il broker fa il resto.** Da lì in poi, come abbiamo visto nella sezione 9, chiunque sia sottoscritto al topic riceve il dato.
 
-🧠 **La regola d'oro**: il pattern **produttore → canale → consumatore** è la spina dorsale di quasi ogni progetto Embassy. Separare "chi genera i dati" da "chi li elabora" con un canale in mezzo rende ogni pezzo semplice da leggere, da testare e da modificare — e fa sì che un pezzo lento (la rete) non blocchi mai un pezzo che deve essere puntuale (il sensore).
+🧠 **La regola d'oro**: il pattern **produttore → canale → consumatore** è la spina dorsale di quasi ogni progetto Embassy, e dividere ogni ruolo nel suo file lo rende evidente a colpo d'occhio. Separare "chi genera i dati" da "chi li elabora" con un canale in mezzo rende ogni pezzo semplice da leggere, da testare e da modificare — e fa sì che un pezzo lento (la rete) non blocchi mai un pezzo che deve essere puntuale (il sensore).
 
 > 💡 **Tip**: per caricare tutto sul chip vale esattamente la procedura vista nel blink (sezione 5): `cargo run --release` con `probe-rs`, oppure il file `.uf2` tenendo premuto BOOTSEL. Lo scheletro del progetto (`Cargo.toml`, `.cargo/config.toml`, `memory.x`) è lo stesso: cambiano solo le dipendenze in più (il driver del sensore, `cyw43`, `embassy-net`, il client MQTT, `sequential-storage`) e il contenuto di `main.rs`.
 
 ---
 
-## 10. Good parts, Bad parts
+## 11. Good parts, Bad parts
 
 **In pillole**: il Rust bare metal è meraviglioso per certe cose e scomodo per altre. Sapere dove sta il confine ti risparmia settimane di frustrazione.
 
@@ -478,9 +607,10 @@ Seguiamo il percorso di un singolo dato, passo per passo:
 2. **`no_std` è Rust senza le parti che presuppongono un computer completo** — perdi `Vec` e `println`, ma tieni il borrow checker e tutte le garanzie che rendono Rust sicuro.
 3. **Embassy porta l'`async/await` sul microcontrollore**: concorrenza leggibile e a basso consumo, senza il labirinto di interrupt del C.
 4. **Ogni progetto Pico in Rust è fatto di quattro file** — `Cargo.toml`, `.cargo/config.toml`, `memory.x`, `main.rs` — e il blink del LED è il modo migliore per vederli in azione la prima volta.
-5. **I sensori si leggono via bus come l'I2C**, e le crate driver + `embedded-hal` nascondono i dettagli del protocollo dietro funzioni pulite.
-6. **La flash si usa con `sequential-storage`**, che gestisce da sé il wear leveling per non bruciare la memoria.
-7. **Il Wi-Fi del Pico W fa due mestieri**: Access Point per configurarsi al primo avvio, poi client per pubblicare i dati via MQTT.
-8. **Il pattern produttore → canale → consumatore** tiene insieme il datalogger: il sensore produce, un canale disaccoppia, il task di rete consuma, salva e pubblica.
+5. **Gli strumenti sono pochi e gratuiti**: `cargo` compila, `probe-rs` carica-mostra-debugga, `defmt` fa da log. Una sonda (anche un secondo Pico) e sei operativo.
+6. **I sensori si leggono via bus come l'I2C**, e le crate driver + `embedded-hal` nascondono i dettagli del protocollo dietro funzioni pulite.
+7. **La flash si usa con `sequential-storage`**, che gestisce da sé il wear leveling per non bruciare la memoria.
+8. **Il Wi-Fi del Pico W fa due mestieri**: Access Point per configurarsi al primo avvio, poi client per pubblicare i dati via MQTT.
+9. **Il pattern produttore → canale → consumatore** tiene insieme il datalogger: il sensore produce, un canale disaccoppia, il task di rete consuma, salva e pubblica; ogni ruolo nel suo file.
 
 Ora prendi quel Pico da pochi euro, saldaci quattro fili, e fai parlare il silicio. 🦀

@@ -1,0 +1,5 @@
+flowchart LR
+    V["AHT20 · VIN"] ---|power 3.3V| P3["Pico W · 3V3 (pin 36)"]
+    G["AHT20 · GND"] ---|ground| PG["Pico W · GND (pin 38)"]
+    D["AHT20 · SDA"] ---|I2C data| P4["Pico W · GPIO 4 (pin 6)"]
+    C["AHT20 · SCL"] ---|I2C clock| P5["Pico W · GPIO 5 (pin 7)"]

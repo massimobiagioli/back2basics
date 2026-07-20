@@ -1,0 +1,5 @@
+flowchart LR
+    GP["Raspberry Pi Pico W<br/>GPIO 15"] -->|wire| R["Resistor<br/>330 Ω"]
+    R --> A["LED anode +<br/>(long leg)"]
+    A --> K["LED cathode −<br/>(short leg)"]
+    K -->|wire| GND["Raspberry Pi Pico W<br/>GND"]
