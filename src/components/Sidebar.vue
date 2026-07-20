@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { usePlaybookIndex } from '@/composables/usePlaybookIndex'
+import type { PlaybookMeta } from '@/types/playbook'
 
 defineEmits<{ close: [] }>()
 
@@ -11,6 +12,16 @@ const { playbooks, loading, fetchIndex } = usePlaybookIndex()
 
 onMounted(() => {
   fetchIndex()
+})
+
+const groupedPlaybooks = computed(() => {
+  const groups = new Map<string, PlaybookMeta[]>()
+  for (const pb of playbooks.value) {
+    const key = pb.category || 'Other'
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key)!.push(pb)
+  }
+  return Array.from(groups.entries()).map(([category, items]) => ({ category, items }))
 })
 </script>
 
@@ -44,25 +55,36 @@ onMounted(() => {
     >
       No playbooks yet
     </p>
-    <ul
+    <div
       v-else
-      class="sidebar__list"
+      class="sidebar__groups"
     >
-      <li
-        v-for="pb in playbooks"
-        :key="pb.slug"
-        class="sidebar__item"
+      <div
+        v-for="group in groupedPlaybooks"
+        :key="group.category"
+        class="sidebar__group"
       >
-        <RouterLink
-          :to="`/${locale}/playbook/${pb.slug}`"
-          class="sidebar__link"
-          active-class="sidebar__link--active"
-          @click="$emit('close')"
-        >
-          {{ pb.title }}
-        </RouterLink>
-      </li>
-    </ul>
+        <h3 class="sidebar__group-title">
+          {{ group.category }}
+        </h3>
+        <ul class="sidebar__list">
+          <li
+            v-for="pb in group.items"
+            :key="pb.slug"
+            class="sidebar__item"
+          >
+            <RouterLink
+              :to="`/${locale}/playbook/${pb.slug}`"
+              class="sidebar__link"
+              active-class="sidebar__link--active"
+              @click="$emit('close')"
+            >
+              {{ pb.title }}
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+    </div>
   </nav>
 </template>
 
@@ -98,9 +120,29 @@ onMounted(() => {
     padding: 4px;
   }
 
+  &__groups {
+    padding: 0.5rem 0;
+    overflow-y: auto;
+  }
+
+  &__group {
+    &:not(:first-child) {
+      margin-top: 0.75rem;
+    }
+  }
+
+  &__group-title {
+    padding: 0.5rem 1rem 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #86868b;
+  }
+
   &__list {
     list-style: none;
-    padding: 0.5rem 0;
+    padding: 0;
   }
 
   &__item {

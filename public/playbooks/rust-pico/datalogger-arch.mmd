@@ -1,0 +1,6 @@
+graph TD
+    SENS["Sensore AHT20<br/>Temperatura + Umidità"] -- I2C --> PICO["Raspberry Pi Pico W<br/>Rust bare metal + Embassy"]
+    PICO -- "Flash interna<br/>(sequential-storage)" --> STORE[("Ultime N letture<br/>+ configurazione")]
+    PICO -- "Wi-Fi Access Point<br/>(primo avvio)" --> PHONE["Telefono / laptop<br/>pagina di configurazione"]
+    PICO -- "Wi-Fi client<br/>(dopo la configurazione)" --> BROKER["Broker MQTT"]
+    BROKER --> DASH["Dashboard / app<br/>che sottoscrive il topic"]

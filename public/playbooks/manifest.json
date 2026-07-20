@@ -1,22 +1,28 @@
 {
   "playbooks": [
-    { "slug": "dotnet", "title": ".NET Pragmatic Approach" },
-    { "slug": "ai", "title": "AI Kickstart" },
-    { "slug": "aws", "title": "AWS for Lazy Developers" },
-    { "slug": "css", "title": "CSS for Backenders" },
-    { "slug": "docker", "title": "Dockerize It" },
-    { "slug": "fastapi", "title": "FastAPI, Pythonic Way" },
-    { "slug": "fastify", "title": "Fastify + TypeScript + Prisma: uno stack gettonato" },
-    { "slug": "http", "title": "HTTP Protocol" },
-    { "slug": "networking", "title": "Networking" },
-    { "slug": "bash", "title": "Non avere paura del Bash" },
-    { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders" },
-    { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali" },
-    { "slug": "ruby", "title": "Ruby: Le Parti Belle" },
-    { "slug": "rust", "title": "Rust da zero a dieci" },
-    { "slug": "security", "title": "Security First" },
-    { "slug": "spring", "title": "Booting Spring Boot — Java Edition" },
-    { "slug": "spring-kotlin", "title": "Booting Spring Boot — Kotlin Edition" },
-    { "slug": "symfony", "title": "Symfony is Alive and Kicking" }
+    { "slug": "dotnet", "title": ".NET Pragmatic Approach", "category": "Languages & Backend" },
+    { "slug": "fastapi", "title": "FastAPI, Pythonic Way", "category": "Languages & Backend" },
+    { "slug": "fastify", "title": "Fastify + TypeScript + Prisma: uno stack gettonato", "category": "Languages & Backend" },
+    { "slug": "rails", "title": "Ruby on Rails: Applicazioni Professionali", "category": "Languages & Backend" },
+    { "slug": "ruby", "title": "Ruby: Le Parti Belle", "category": "Languages & Backend" },
+    { "slug": "rust", "title": "Rust da zero a dieci", "category": "Languages & Backend" },
+    { "slug": "spring", "title": "Booting Spring Boot — Java Edition", "category": "Languages & Backend" },
+    { "slug": "spring-kotlin", "title": "Booting Spring Boot — Kotlin Edition", "category": "Languages & Backend" },
+    { "slug": "symfony", "title": "Symfony is Alive and Kicking", "category": "Languages & Backend" },
+
+    { "slug": "css", "title": "CSS for Backenders", "category": "Frontend" },
+    { "slug": "frontend", "title": "React, Angular, Vue for CLI Backenders", "category": "Frontend" },
+
+    { "slug": "rust-pico", "title": "Bare Metal Rust per Raspberry Pi Pico", "category": "Embedded & IoT" },
+
+    { "slug": "aws", "title": "AWS for Lazy Developers", "category": "Infrastructure & DevOps" },
+    { "slug": "bash", "title": "Non avere paura del Bash", "category": "Infrastructure & DevOps" },
+    { "slug": "docker", "title": "Dockerize It", "category": "Infrastructure & DevOps" },
+    { "slug": "http", "title": "HTTP Protocol", "category": "Infrastructure & DevOps" },
+    { "slug": "networking", "title": "Networking", "category": "Infrastructure & DevOps" },
+
+    { "slug": "security", "title": "Security First", "category": "Security" },
+
+    { "slug": "ai", "title": "AI Kickstart", "category": "Artificial Intelligence" }
   ]
 }
