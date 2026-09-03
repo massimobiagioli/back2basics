@@ -23,6 +23,8 @@
 
     { "slug": "security", "title": "Security First", "category": "Security" },
 
-    { "slug": "ai", "title": "AI Kickstart", "category": "Artificial Intelligence" }
+    { "slug": "ai", "title": "AI Kickstart", "category": "Artificial Intelligence" },
+
+    { "slug": "rails-calculator", "title": "Rails Calculator Step-by-Step", "category": "Playbooks" }
   ]
 }
